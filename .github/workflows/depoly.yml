@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
 
-      - name: Build
+      - name: dart pub get
         run: dart pub get
-        # run: dart pub global activate webdev
+        
+      - name: Build
         run: dart run src/main.dart
-        # run: webdev build --output build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
