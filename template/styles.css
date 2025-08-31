@@ -1,0 +1,179 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0; 
+}
+
+:root {
+  --neutral-color-50: oklch(98.5% 0.001 106.423);
+  --neutral-color-100: oklch(97% 0 0);
+  --neutral-color-200: oklch(92.2% 0 0);
+  --neutral-color-300: oklch(87% 0 0);
+  --neutral-color-400: oklch(70.8% 0 0);
+  --neutral-color-500: oklch(55.6% 0 0);
+  --neutral-color-600: oklch(43.9% 0 0);
+  --neutral-color-700: oklch(37.1% 0 0);
+  --neutral-color-800: oklch(26.9% 0 0);
+  --neutral-color-900: oklch(20.5% 0 0);
+  --neutral-color-950: oklch(14.5% 0 0);
+
+  --primary-color: oklch(62.3% 0.214 259.815);
+  --on-primary-color: oklch(28.2% 0.091 267.935);
+  --primary-container-color: oklch(93.2% 0.032 255.585);
+  --on-primary-container-color: oklch(28.2% 0.091 267.935);
+}
+
+html {
+  background-color: var(--neutral-color-100);
+}
+
+body {
+  background-color: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  margin: 0;
+  padding: 0;
+  /* font-size: initial;
+  font-weight: initial; */
+}
+
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+header {
+  width: 100%;
+  height: 60px;
+  padding-left: 48px;
+  padding-right: 48px;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+
+  background-color: var(--neutral-color-100);
+  border-bottom: 1px solid var(--neutral-color-300);
+}
+
+header > .root-link > .title {
+  font-size: 18px;
+  text-decoration: none;
+}
+
+header > .root-link > img {
+  border: 1px solid var(--neutral-color-300);
+  border-radius: 6px;
+}
+
+header > .root-link {
+  text-decoration: none;
+  display: flex;
+  gap: 16px;
+  color: var(--neutral-color-950);
+  align-items: center;
+}
+
+header > .github-link {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.go-to-list {
+  color: var(--primary-color);
+  text-decoration: underline;
+  font-size: small;
+}
+
+.article > .article-title {
+  font-size: x-large;
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+.article > .metadata {
+  color: var(--neutral-color-500);
+  font-size: small;
+}
+
+#main {
+  max-width: 960px;
+  margin: 0px auto;
+  padding: 24px 48px;
+}
+
+@media (max-width: 640px) {
+  #main {
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 24px 20px;
+  }
+
+}
+
+#article-list {
+  width: 100%;
+
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#article-list > li {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid var(--neutral-color-200);
+
+  margin-bottom: 16px;
+  padding: 0 16px;
+}
+
+#article-list > li > #number {
+  color: var(--neutral-color-500);
+  
+}
+#article-list > li > a {
+  margin-left: 24px;
+  
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+#article-list > li > #description {
+  color: var(--neutral-color-500);
+  margin-left: 24px;
+  font-size: small;
+  
+}

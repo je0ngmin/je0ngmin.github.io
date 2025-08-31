@@ -1,0 +1,6 @@
+title: 직접 만든 Dart용 한글 패키지 (조사, 로마자 변환, 음절 분해)
+released_at: 2025-08-31 15:28 +0900
+description: Dart용 한글 패키지 hangul_utils을 만들었습니다.
+
+keywords:
+  - 한글

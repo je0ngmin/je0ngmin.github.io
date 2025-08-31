@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>{{ title }} - Je0ngmin의 블로그</title>
+<meta name="description" content="{{ description }}" />
+{% endblock %}
+
+{% block main %}
+<a class="go-to-list" href="/">글 목록으로 돌아가기</a>
+<div class="article">
+  <div class="article-title">
+    {{ title }}
+  </div>
+  <time class="metadata" datetime="{{ released_at }}">작성일: {{ released_at }}</time>
+  <hr />
+  <article class="markdown-body">
+    <h1 class="sr-only">
+      {{ title }}
+    </h1>
+    {{ content }}
+  </article>
+</div>
+{% endblock %}
