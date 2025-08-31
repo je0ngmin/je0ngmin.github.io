@@ -9,6 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Build
+        run: dart pub get
+        # run: dart pub global activate webdev
+        run: dart run src/main.dart
+        # run: webdev build --output build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

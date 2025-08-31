@@ -2,7 +2,16 @@
 
 {% block head %}
 <title>{{ title }} - Je0ngmin의 블로그</title>
-<meta name="description" content="{{ description }}" />
+<meta name="description" content="{{ description }}">
+<meta property="date" content="{{ released_at }}">
+
+<meta name="og:title" content="{{ title }} - Je0ngmin의 블로그">
+<meta name="twitter:title" content="{{ title }} - Je0ngmin의 블로그">
+<meta name="og:description" content="{{ description }}">
+<meta property="og:type" content="article">
+<meta name="keywords" content="{{ keywords }}">
+<meta property="og:url" content="https://je0ngmin.github.io/{{ url }}">
+<link rel="canonical" href="https://je0ngmin.github.io/{{ url }}">
 {% endblock %}
 
 {% block main %}
@@ -19,5 +28,14 @@
     </h1>
     {{ content }}
   </article>
+  <hr />
+  <script src="https://utteranc.es/client.js"
+        repo="je0ngmin/je0ngmin.github.io"
+        issue-term="pathname"
+        label="Comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+  </script>
 </div>
 {% endblock %}

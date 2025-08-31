@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Sitemap: https://je0ngmin.github.io/sitemap.xml
+
+User-agent: bingbot
+Crawl-delay: 20
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Googlebot-image
+Disallow: /

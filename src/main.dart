@@ -31,19 +31,23 @@ Future<void> main() async {
         description: metadata['description'],
         url: path.basename(entity.path),
         releasedAt: DateTime.parse(metadata['released_at']),
+
         markdown: await File(
           path.join(entity.path, "content.md"),
         ).readAsString(),
       );
+
       await newFile.writeAsString(
         template.render({
           'title': article.title,
           'description': article.description,
           'released_at': article.releasedAt.toIso8601String(),
+          'keywords': (metadata['keywords'] as YamlList).join(", "),
           'content': markdownToHtml(
             article.markdown,
             extensionSet: ExtensionSet.gitHubWeb,
           ),
+          'url': article.url,
         }),
       );
       articles.add(article);
@@ -67,6 +71,32 @@ Future<void> main() async {
           .toList(),
     }),
   );
+
+  // sitemap.xml
+  String urlsetStart =
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+  String urlsetEnd = '</urlset>';
+
+  String rootUrlElement = '''
+  <url>
+    <loc>https://je0ngmin.github.io</loc>
+    <priority>1.0</priority>
+  </url>''';
+
+  // URL 요소 생성
+  String urlElements = articles
+      .map((article) {
+        return '''
+  <url>
+    <loc>https://je0ngmin.github.io/${article.url}</loc>
+    <lastmod>${article.releasedAt.toIso8601String()}</lastmod>
+  </url>''';
+      })
+      .join('\n');
+
+  String sitemapXml = '$urlsetStart\n$rootUrlElement\n$urlElements\n$urlsetEnd';
+
+  await File("build/sitemap.xml").writeAsString(sitemapXml);
 
   await File("build/article.html").delete();
   await File("build/base.html").delete();

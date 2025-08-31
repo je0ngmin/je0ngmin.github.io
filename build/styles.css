@@ -1,6 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap'); */
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css");
-
 html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
@@ -28,6 +25,14 @@ html, body {
   --on-primary-color: oklch(28.2% 0.091 267.935);
   --primary-container-color: oklch(93.2% 0.032 255.585);
   --on-primary-container-color: oklch(28.2% 0.091 267.935);
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid var(--neutral-color-200);
+  color: var(--neutral-color-200);
+  margin-top: 1.5rem;
+  margin-bottom: .3em;
 }
 
 html {
