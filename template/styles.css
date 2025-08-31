@@ -136,7 +136,11 @@ header > .github-link {
   padding: 24px 48px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
   #main {
     max-width: 100%;
     width: 100%;
@@ -158,11 +162,11 @@ header > .github-link {
   display: flex;
   align-items: center;
   width: 100%;
-  height: 50px;
+  min-height: 50px;
   border-bottom: 1px solid var(--neutral-color-200);
 
   margin-bottom: 16px;
-  padding: 0 16px;
+  padding: 8px 16px;
 }
 
 #article-list > li > #number {
