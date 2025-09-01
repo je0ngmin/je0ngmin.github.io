@@ -9,4 +9,5 @@ User-agent: ChatGPT-User
 Disallow: /
 
 User-agent: Googlebot-image
+Allow: /assets/github-profile-image.webp
 Disallow: /assets/
