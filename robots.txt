@@ -9,4 +9,4 @@ User-agent: ChatGPT-User
 Disallow: /
 
 User-agent: Googlebot-image
-Disallow: /
+Disallow: /assets/
