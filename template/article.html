@@ -15,13 +15,18 @@
 {% endblock %}
 
 {% block main %}
-<a class="go-to-list" href="/">글 목록으로 돌아가기</a>
 <div class="article">
+  <time
+    class="metadata"
+
+    datetime="{{ released_at }}"
+  >
+    {{ released_at }}
+  </time>
   <div class="article-title">
     {{ title }}
   </div>
-  <time class="metadata" datetime="{{ released_at }}">작성일: {{ released_at }}</time>
-  <hr />
+  <div style="height: 32px;" />
   <article class="markdown-body">
     <h1 class="sr-only">
       {{ title }}

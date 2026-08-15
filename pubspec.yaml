@@ -1,12 +1,10 @@
 name: github_blog
 description: An absolute bare-bones web app.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
 
 environment:
   sdk: ^3.9.0
-
-# Add regular dependencies here.
+  
 dependencies:
   web: ^1.1.1
   jinja: ^0.6.4

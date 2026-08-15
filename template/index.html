@@ -2,13 +2,15 @@
 
 
 {% block main %}
-<h1 style="font-size: 24px; font-weight: 600; text-align: center; width: 100%; margin-bottom: 24px;">글 목록</h1>
+<h2 class="sr-only">글 목록</h1>
 <ul id="article-list">
     {% for article in articles %}
     <li>
         <div id="number">{{ article.url }}</div>
-        <a href="/{{ article.url }}">{{ article.title }}</a>
-        <p id="description">{{ article.description }}</p>
+        <div class="content">
+            <a class="title" href="/{{ article.url }}">{{ article.title }}</a>
+            <div class="description">{{ article.description }}</div>
+        </div>
     </li>
     {% endfor %}
 </ul>

@@ -20,6 +20,7 @@ Future<void> main() async {
   List<Article> articles = [];
   await for (var entity in articleDir.list(recursive: false)) {
     if (entity is Directory) {
+      if (path.basename(entity.path) == ".obsidian") continue;
       final newFile = File('build/${path.basename(entity.path)}.html');
 
       var template = environment.fromString(await templateFile.readAsString());
@@ -58,6 +59,8 @@ Future<void> main() async {
   var indexTemplate = environment.fromString(
     await indexTemplateFile.readAsString(),
   );
+  articles.sort((a, b) => a.releasedAt.compareTo(b.releasedAt));
+  articles = articles.reversed.toList();
   indexTemplateFile.writeAsString(
     indexTemplate.render({
       'articles': articles
