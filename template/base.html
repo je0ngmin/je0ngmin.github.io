@@ -6,49 +6,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/github-profile-image.webp"/>
-    <link rel="apple-touch-icon" href="/assets/github-profile-image.webp"/>
-    <meta name="scaffolded-by" content="https://github.com/dart-lang/sdk">
+    <link rel="apple-touch-icon" href="/assets/p.webp"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="robots" content="index, follow">
     {% block head %}
-    <title>Je0ngmin의 블로그</title>
-    <meta property="og:title" content="Je0ngmin의 블로그">
+    <title>je0ngmin</title>
+    <meta property="og:title" content="je0ngmin">
     <link rel="canonical" href="https://je0ngmin.github.io">
     {% endblock %}
-    <link rel="stylesheet" as="style" href="styles.css">
-    <link rel="stylesheet" as="style" href="markdown.css">
-    <link rel="preload" href="/assets/github-profile-image.webp" as="image">
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="f.min.css" />
 </head>
 
 <body>
   <header>
     <a href="/" class="root-link">
-      <img src="/assets/github-profile-image.webp" width="24" height="24" />
+      <img src="/assets/p.webp" width="24" height="24" alt="" />
       <div class="content">
         <div class="title">
           Han Jeongmin
         </div>
-        <div class="description">
-          je0ngmin.github.io
-        </div>
       </div>
     </a>
-    <div style="flex: 1;"></div>
+    <div style="flex:1;"></div>
     <a
-      class="github-link"
       href="https://github.com/je0ngmin"
       target="_blank"
-      aria-label="GitHub로 이동"
+      aria-label="GitHub"
+      title="GitHub"
     >
-      <img src="/assets/GitHub_Invertocat_Black_Clearspace.svg" width="24" height="24" />
+      <img src="/assets/gh.svg" width="30" height="30" alt="" />
+    </a>
+    <div style="width:16px;"></div>
+    <a
+      href="https://x.com/impengdori"
+      target="_blank"
+      aria-label="X (@impengdori)"
+      title="X (@impengdori)"
+    >
+      <img src="/assets/x.webp" width="20" height="20" alt="" />
     </a>
   </header>
   <div id="main">
     {% block main %}
-    <div id="output">
-
-    </div>
     {% endblock %}
   </div>
 </body>

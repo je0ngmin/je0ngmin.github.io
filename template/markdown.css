@@ -5,7 +5,7 @@
   --base-size-24: 1.5rem;
   --base-size-40: 2.5rem;
   --base-text-weight-normal: 400;
-  --base-text-weight-medium: 500;
+  --base-text-weight-medium: 400;
   --base-text-weight-semibold: 600;
   --fontStack-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
   --fgColor-accent: Highlight;
@@ -79,7 +79,7 @@
     --fgColor-danger: #d1242f;
     --fgColor-done: #8250df;
     --bgColor-default: #ffffff;
-    --bgColor-muted: #f6f8fa;
+    --bgColor-muted: var(--neutral-color-100);
     --bgColor-neutral-muted: #818b981f;
     --bgColor-attention-muted: #fff8c5;
     --borderColor-default: #d1d9e0;
@@ -196,7 +196,7 @@
   font-weight: var(--base-text-weight-semibold, 600);
   padding-bottom: .3em;
   font-size: 2em;
-  border-bottom: 1px solid var(--borderColor-muted);
+  /* border-bottom: 1px solid var(--borderColor-muted); */
 }
 
 .markdown-body mark {
@@ -401,7 +401,7 @@
   font-weight: var(--base-text-weight-semibold, 600);
   padding-bottom: .3em;
   font-size: 1.5em;
-  border-bottom: 1px solid var(--borderColor-muted);
+  /* border-bottom: 1px solid var(--borderColor-muted); */
 }
 
 .markdown-body h3 {

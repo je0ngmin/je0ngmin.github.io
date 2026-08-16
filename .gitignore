@@ -3,5 +3,8 @@
 .dart_tool/
 .DS_Store
 .obsidian
+node_modules/
+.dev/
+.build-tools/
 
 build/

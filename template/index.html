@@ -2,14 +2,30 @@
 
 
 {% block main %}
-<h2 class="sr-only">글 목록</h1>
+
+<section class="first-hero">
+    <section class="main">
+        <h2 class="sr-only">자기소개</h2>
+        <p>안녕하세요!</p>
+        <p>저는 <b>개발자 지망생</b>입니다.</p>
+        <p>웹 개발, 앱 개발, 인디 게임 개발에 관심이 있습니다.</p>
+        <h2 class="sr-only">포트폴리오 소개</h1>
+        <p>
+            요즘은 오픈 소스 라이브러리를 만들고 있으며,
+            <a href="https://github.com/je0ngmin/webview-fix-kit" target="_blank">webview-fix-kit<img src="assets/aur.i.svg" alt="" /></a>,
+            <a href="https://github.com/je0ngmin/screenstack" target="_blank">screenstack<img src="assets/aur.i.svg" alt="" /></a>,
+            <a href="https://github.com/je0ngmin/hangul-utils" target="_blank">hangul-utils<img src="assets/aur.i.svg" alt="" /></a>를 개발했습니다.
+        </p>
+    </section>
+</section>
+
+<h2 class="sr-only">블로그</h2>
 <ul id="article-list">
     {% for article in articles %}
     <li>
-        <div id="number">{{ article.url }}</div>
         <div class="content">
             <a class="title" href="/{{ article.url }}">{{ article.title }}</a>
-            <div class="description">{{ article.description }}</div>
+            <p class="description">{{ article.description }}</p>
         </div>
     </li>
     {% endfor %}

@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>{{ title }} - Je0ngmin의 블로그</title>
+<title>{{ title }} - je0ngmin</title>
+<link rel="stylesheet" as="style" href="markdown.css">
 <meta name="description" content="{{ description }}">
 <meta property="date" content="{{ released_at }}">
-
-<meta name="og:title" content="{{ title }} - Je0ngmin의 블로그">
-<meta name="twitter:title" content="{{ title }} - Je0ngmin의 블로그">
+<meta name="og:title" content="{{ title }} - je0ngmin">
 <meta name="og:description" content="{{ description }}">
 <meta property="og:type" content="article">
 <meta name="keywords" content="{{ keywords }}">
@@ -16,17 +15,18 @@
 
 {% block main %}
 <div class="article">
+  <div style="height:32px;"></div>
   <time
     class="metadata"
 
     datetime="{{ released_at }}"
   >
-    {{ released_at }}
+    {{ released_at_display }}
   </time>
   <div class="article-title">
     {{ title }}
   </div>
-  <div style="height: 32px;" />
+  <div style="height:24px;"></div>
   <article class="markdown-body">
     <h1 class="sr-only">
       {{ title }}

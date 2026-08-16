@@ -1,29 +1,30 @@
 html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard Variable", Pretendard, Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-
   width: 100%;
-  min-height: 100vh;
   margin: 0;
-  padding: 0; 
+  padding: 0;
+  font-weight: 400;
+  background-color: #fff;
+  scrollbar-gutter: stable;
 }
 
 :root {
-  --neutral-color-50: oklch(98.5% 0.001 106.423);
+  /* --neutral-color-50: oklch(98.5% 0.001 106.423); */
   --neutral-color-100: oklch(97% 0 0);
   --neutral-color-200: oklch(92.2% 0 0);
-  --neutral-color-300: oklch(87% 0 0);
-  --neutral-color-400: oklch(70.8% 0 0);
+  /*--neutral-color-300: oklch(87% 0 0);
+  --neutral-color-400: oklch(70.8% 0 0); */
   --neutral-color-500: oklch(55.6% 0 0);
-  --neutral-color-600: oklch(43.9% 0 0);
+  /* --neutral-color-600: oklch(43.9% 0 0);
   --neutral-color-700: oklch(37.1% 0 0);
   --neutral-color-800: oklch(26.9% 0 0);
-  --neutral-color-900: oklch(20.5% 0 0);
+  --neutral-color-900: oklch(20.5% 0 0); */
   --neutral-color-950: oklch(14.5% 0 0);
 
   --primary-color: oklch(62.3% 0.214 259.815);
-  --on-primary-color: oklch(28.2% 0.091 267.935);
-  --primary-container-color: oklch(93.2% 0.032 255.585);
-  --on-primary-container-color: oklch(28.2% 0.091 267.935);
+  /* --on-primary-color: oklch(28.2% 0.091 267.935); */
+  /* --primary-container-color: oklch(93.2% 0.032 255.585); */
+  /* --on-primary-container-color: oklch(28.2% 0.091 267.935); */
 }
 
 hr {
@@ -33,11 +34,6 @@ hr {
   margin-top: 1.5rem;
   margin-bottom: .3em;
 }
-
-html, body {
-  background-color: #ffffff;
-}
-
 *,
 *::before,
 *::after {
@@ -56,6 +52,10 @@ span {
   padding: 0;
 }
 
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: 600;
+}
 
 .sr-only {
   position: absolute;
@@ -87,13 +87,6 @@ header > .root-link > .content > .title {
   text-decoration: none;
 }
 
-header > .root-link > .content > .description {
-  font-size: 13px;
-  color: var(--neutral-color-500);
-  text-decoration: none;
-  padding-block: 2px;
-}
-
 
 header > .root-link > img {
   width: 24px;
@@ -108,13 +101,9 @@ header > .root-link {
   align-items: center;
 }
 
-header > .github-link {
-  color: var(--primary-color);
-  text-decoration: underline;
-}
-
 .article > .article-title {
-  font-size: 30px;
+  font-size: 28px;
+  width: 80%;
   font-weight: 600;
   word-break: keep-all;
 }
@@ -129,7 +118,7 @@ header > .github-link {
 #main {
   max-width: 960px;
   margin: 0px auto;
-  padding: 24px 48px;
+  padding: 8px 48px;
 }
 
 @media (max-width: 768px) {
@@ -142,7 +131,7 @@ header > .github-link {
     max-width: 100%;
     width: 100%;
     margin: 0;
-    padding: 24px 20px;
+    padding: 8px 36px;
   }
 }
 
@@ -158,19 +147,9 @@ header > .github-link {
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: 50px;
-  border-bottom: 1px solid var(--neutral-color-200);
 
-  margin-bottom: 16px;
-  padding: 8px 16px;
-}
-
-#article-list > li > #number {
-  color: var(--neutral-color-500);
-}
-
-#article-list > li > .content {
-  margin-left: 24px;
+  margin-block: 8px;
+  padding: 8px 0;
 }
 #article-list > li > .content > .title {
   padding-block: 4px;
@@ -181,7 +160,40 @@ header > .github-link {
 
 #article-list > li > .content > .description {
   color: var(--neutral-color-500);
-  padding-block: 4px;
+  padding-block: 6px;
   font-size: 13px;
   word-break: keep-all;
+}
+
+.first-hero {
+  display: block;
+  word-break: keep-all;
+  margin-block: 72px;
+}
+
+.first-hero b {
+  font-weight: 400;
+  color: var(--neutral-color-950);
+}
+
+.first-hero a,
+.first-hero a:visited {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+.first-hero a > img {
+  border-bottom: 1.5px var(--primary-color) solid;
+  margin-bottom: 3px;
+}
+
+.first-hero > .main {
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--neutral-color-500);
+  letter-spacing: -0.025cap;
 }
