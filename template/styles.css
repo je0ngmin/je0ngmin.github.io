@@ -172,7 +172,7 @@ header > .root-link {
 }
 
 .first-hero b {
-  font-weight: 400;
+  font-weight: 600;
   color: var(--neutral-color-950);
 }
 
@@ -181,7 +181,7 @@ header > .root-link {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--primary-color);
   text-decoration: underline;
 }
