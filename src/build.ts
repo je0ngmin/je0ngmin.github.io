@@ -11,10 +11,12 @@ const projectRoot = process.cwd();
 const templateDirectory = path.join(projectRoot, "template");
 const articlesDirectory = path.join(projectRoot, "articles");
 const siteUrl = "https://je0ngmin.github.io";
+const notesPath = "notes";
 const koreanTimeZone = "Asia/Seoul";
 
 interface ArticleMetadata {
   title: string;
+  slug: string;
   released_at: string | Date;
   description: string;
   keywords?: string[];
@@ -52,6 +54,10 @@ function formatKoreanDateTime(date: Date): string {
   }).format(date);
 }
 
+function getNotePath(slug: string): string {
+  return `${notesPath}/${slug}`;
+}
+
 export interface BuildOptions {
   outputDirectory?: string;
   minify?: boolean;
@@ -63,10 +69,13 @@ function assertMetadata(value: unknown, source: string): asserts value is Articl
   }
 
   const metadata = value as Record<string, unknown>;
-  for (const field of ["title", "description"] as const) {
+  for (const field of ["title", "slug", "description"] as const) {
     if (typeof metadata[field] !== "string" || metadata[field].length === 0) {
       throw new Error(`${source}: ${field} 값이 필요합니다.`);
     }
+  }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(metadata.slug as string)) {
+    throw new Error(`${source}: slug는 영문 소문자, 숫자, 하이픈만 사용할 수 있습니다.`);
   }
   if (!(typeof metadata.released_at === "string" || metadata.released_at instanceof Date)) {
     throw new Error(`${source}: released_at 값이 필요합니다.`);
@@ -103,6 +112,14 @@ async function loadArticles(): Promise<Article[]> {
       };
     }),
   );
+
+  const slugs = new Set<string>();
+  for (const article of articles) {
+    if (slugs.has(article.slug)) {
+      throw new Error(`중복된 slug입니다: ${article.slug}`);
+    }
+    slugs.add(article.slug);
+  }
 
   return articles.sort((a, b) => b.releasedAt.getTime() - a.releasedAt.getTime());
 }
@@ -196,12 +213,17 @@ export async function buildSite(options: BuildOptions = {}): Promise<void> {
   await copyStaticFiles(outputDirectory, shouldMinify);
 
   const indexHtml = environment.render("index.html", {
-    articles: articles.map(({ title, url, description }) => ({ title, url, description })),
+    articles: articles.map(({ title, slug, description }) => ({
+      title,
+      url: getNotePath(slug),
+      description,
+    })),
   });
   await writeText(path.join(outputDirectory, "index.html"), indexHtml, shouldMinify);
 
   await Promise.all(
     articles.map(async (article) => {
+      const notePath = getNotePath(article.slug);
       const html = environment.render("article.html", {
         title: article.title,
         description: article.description,
@@ -209,9 +231,10 @@ export async function buildSite(options: BuildOptions = {}): Promise<void> {
         released_at_display: formatKoreanDateTime(article.releasedAt),
         keywords: article.keywords?.join(", "),
         content: new nunjucks.runtime.SafeString(await marked.parse(article.content)),
-        url: article.url,
+        slug: article.slug,
+        url: notePath,
       });
-      await writeText(path.join(outputDirectory, `${article.url}.html`), html, shouldMinify);
+      await writeText(path.join(outputDirectory, `${notePath}.html`), html, shouldMinify);
     }),
   );
 
@@ -221,7 +244,7 @@ export async function buildSite(options: BuildOptions = {}): Promise<void> {
     `<url><loc>${siteUrl}</loc><priority>1.0</priority></url>`,
     ...articles.map(
       (article) =>
-        `<url><loc>${siteUrl}/${escapeXml(article.url)}</loc><lastmod>${toKoreanIsoString(article.releasedAt)}</lastmod></url>`,
+        `<url><loc>${siteUrl}/${escapeXml(getNotePath(article.slug))}</loc><lastmod>${toKoreanIsoString(article.releasedAt)}</lastmod></url>`,
     ),
     "</urlset>",
   ].join(shouldMinify ? "" : "\n");

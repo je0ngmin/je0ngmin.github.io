@@ -2,7 +2,7 @@
 
 {% block head %}
 <title>{{ title }} - je0ngmin</title>
-<link rel="stylesheet" as="style" href="markdown.css">
+<link rel="stylesheet" href="/markdown.css">
 <meta name="description" content="{{ description }}">
 <meta property="date" content="{{ released_at }}">
 <meta name="og:title" content="{{ title }} - je0ngmin">
@@ -36,7 +36,7 @@
   <hr />
   <script src="https://utteranc.es/client.js"
         repo="je0ngmin/je0ngmin.github.io"
-        issue-term="pathname"
+        issue-term="{{ slug }}"
         label="Comment"
         theme="github-light"
         crossorigin="anonymous"
