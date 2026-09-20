@@ -134,6 +134,7 @@ header > .root-link {
 
 .vertical-header {
   --guestbook-gap: 2px;
+  --guestbook-leading-space: 24px;
   width: 100%;
   height: 54px;
   margin-top: 8px;
@@ -192,9 +193,12 @@ header > .root-link {
 
 .vertical-header .i {
   flex: none;
+  border: 0;
   border-radius: 12px;
   height: 100%;
   padding: 0 16px;
+  color: var(--neutral-color-950);
+  font: inherit;
   font-size: 0.9rem;
   display: flex;
   justify-content: center;
@@ -202,6 +206,18 @@ header > .root-link {
   background-color: var(--neutral-color-100);
   corner-shape: superellipse(0.6);
   white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.vertical-header .i:hover,
+.vertical-header .i:focus-visible {
+  background-color: var(--neutral-color-200);
+}
+
+.vertical-header .i:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: -2px;
 }
 
 .vertical-header .i.image {
@@ -214,6 +230,204 @@ header > .root-link {
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+.vertical-header.has-open-dialog .vertical-header-track.is-running {
+  animation-play-state: paused;
+}
+
+.vertical-header .i.is-hero-source {
+  visibility: hidden;
+}
+
+.guestbook-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: max(56px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  color: var(--neutral-color-950);
+  background-color: rgb(255 255 255 / 82%);
+  overflow: hidden;
+}
+
+.guestbook-dialog[open] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  place-items: center;
+  gap: 16px;
+  animation: guestbook-dialog-background-in 420ms ease-out both;
+}
+
+.guestbook-dialog.is-closing {
+  animation: guestbook-dialog-background-out 280ms ease-in both;
+}
+
+.guestbook-dialog::backdrop {
+  background: transparent;
+}
+
+.guestbook-dialog-close {
+  position: absolute;
+  z-index: 3;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--neutral-color-950);
+  background: var(--neutral-color-200);
+  cursor: pointer;
+}
+
+.guestbook-dialog-close svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.guestbook-dialog-item {
+  width: min(900px, calc(100vw - 32px));
+  height: min(42vh, 360px);
+  min-height: 160px;
+  border-radius: 28px;
+  padding: clamp(24px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--neutral-color-100);
+  font-size: clamp(1.5rem, 5vw, 3.5rem);
+  line-height: 1.35;
+  text-align: center;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  transform-origin: center;
+}
+
+.guestbook-dialog-item.image {
+  aspect-ratio: 30 / 8;
+  height: auto;
+  padding: 0;
+}
+
+.guestbook-dialog-item.image > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.guestbook-hero-clone {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-color-950);
+  background: var(--neutral-color-100);
+  line-height: 1.35;
+  text-align: center;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+.guestbook-hero-clone.image > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.guestbook-view-all {
+  min-height: 44px;
+  border-radius: 22px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--neutral-color-950);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+@keyframes guestbook-dialog-background-in {
+  from {
+    background-color: rgb(255 255 255 / 0%);
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+  }
+}
+
+@keyframes guestbook-dialog-background-out {
+  to {
+    background-color: rgb(255 255 255 / 0%);
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+  }
+}
+
+.guestbook-grid-main {
+  width: 100%;
+  padding: 8px 8px 32px;
+}
+
+.guestbook-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  align-content: start;
+  align-items: start;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.guestbook-grid.is-loaded {
+  opacity: 1;
+}
+
+.guestbook-grid .i {
+  aspect-ratio: 30 / 8;
+  width: 100%;
+  min-width: 0;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neutral-color-950);
+  background: var(--neutral-color-100);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  line-height: 1.4;
+  text-align: center;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.guestbook-grid .i.image {
+  padding: 0;
+  overflow: hidden;
+}
+
+.guestbook-grid .i.image > img {
+  width: 100%;
+  height: 100%;
+  display: block;
   object-fit: contain;
 }
 
@@ -234,6 +448,13 @@ header > .root-link {
   .vertical-header-track.is-running {
     animation-play-state: paused;
     will-change: auto;
+  }
+
+  .guestbook-dialog[open],
+  .guestbook-dialog.is-closing,
+  .guestbook-grid {
+    animation: none;
+    transition: none;
   }
 }
 

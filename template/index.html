@@ -58,6 +58,16 @@
 <div class="vertical-header vertical-mask" aria-label="방명록">
     <div class="vertical-header-track"></div>
 </div>
+<dialog class="guestbook-dialog" aria-label="방명록 자세히 보기">
+    <button class="guestbook-dialog-close" type="button" aria-label="닫기" title="닫기">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18"/>
+        </svg>
+    </button>
+    <div class="guestbook-dialog-item"></div>
+    <div class="guestbook-hero-clone" role="document" hidden></div>
+    <a class="guestbook-view-all" href="/guestbook/">방명록 전체 보기</a>
+</dialog>
 <section class="main-margin" style="margin-top: 36px;">
 <h2 class="sr-only">작성한 글 목록</h2>
 <ul id="article-list">

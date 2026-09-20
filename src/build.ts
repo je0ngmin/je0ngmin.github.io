@@ -170,7 +170,7 @@ async function copyStaticFiles(outputDirectory: string, shouldMinify: boolean): 
 
   await Promise.all(
     entries.map(async (entry) => {
-      if (["base.html", "index.html", "article.html", "main.dart"].includes(entry.name)) {
+      if (["base.html", "index.html", "article.html", "guestbook.html", "main.dart"].includes(entry.name)) {
         return;
       }
 
@@ -221,6 +221,9 @@ export async function buildSite(options: BuildOptions = {}): Promise<void> {
   });
   await writeText(path.join(outputDirectory, "index.html"), indexHtml, shouldMinify);
 
+  const guestbookHtml = environment.render("guestbook.html");
+  await writeText(path.join(outputDirectory, "guestbook", "index.html"), guestbookHtml, shouldMinify);
+
   await Promise.all(
     articles.map(async (article) => {
       const notePath = getNotePath(article.slug);
@@ -242,6 +245,7 @@ export async function buildSite(options: BuildOptions = {}): Promise<void> {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     `<url><loc>${siteUrl}</loc><priority>1.0</priority></url>`,
+    `<url><loc>${siteUrl}/guestbook/</loc></url>`,
     ...articles.map(
       (article) =>
         `<url><loc>${siteUrl}/${escapeXml(getNotePath(article.slug))}</loc><lastmod>${toKoreanIsoString(article.releasedAt)}</lastmod></url>`,

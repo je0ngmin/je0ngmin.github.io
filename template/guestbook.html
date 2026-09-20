@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body_class %}guestbook-grid-page{% endblock %}
+
+{% block head %}
+<title>방명록 - je0ngmin</title>
+<meta name="description" content="je0ngmin의 방명록">
+<meta property="og:title" content="방명록 - je0ngmin">
+<meta property="og:url" content="https://je0ngmin.github.io/guestbook/">
+<link rel="canonical" href="https://je0ngmin.github.io/guestbook/">
+{% endblock %}
+
+{% block main %}
+<main class="guestbook-grid-main">
+    <h1 class="sr-only">방명록 전체 보기</h1>
+    <p class="main-margin" style="margin-bottom: 16px; font-size: 13px; text-align: center; color: var(--neutral-color-500);">방명록의 삭제를 원하시거나 부적절한 방명록을 발견하신 분들은 X 계정 (@impengdori)를 통해 연락을 남겨주세요.</p>
+    <div class="guestbook-grid" aria-label="방명록" aria-live="polite"></div>
+</main>
+{% endblock %}
