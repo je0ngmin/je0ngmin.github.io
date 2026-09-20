@@ -27,6 +27,37 @@ html, body {
   /* --on-primary-container-color: oklch(28.2% 0.091 267.935); */
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-fade-out 160ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: page-fade-in 220ms ease-out both;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 hr {
   border: 0;
   border-bottom: 1px solid var(--neutral-color-200);
@@ -102,8 +133,8 @@ header > .root-link {
 }
 
 .article > .article-title {
-  font-size: 28px;
-  width: 80%;
+  font-size: 2.04rem;
+  line-height: calc(2.04rem + 0.6rem);
   font-weight: 600;
   word-break: keep-all;
 }
@@ -112,7 +143,7 @@ header > .root-link {
   display: block;
   color: var(--neutral-color-500);
   margin-bottom: 12px;
-  font-size: 14px;
+  font-size: 1.2rem;
 }
 
 #main {
@@ -151,24 +182,28 @@ header > .root-link {
   margin-block: 8px;
   padding: 8px 0;
 }
+
 #article-list > li > .content > .title {
   padding-block: 4px;
   color: var(--primary-color);
   text-decoration: underline;
   word-break: keep-all;
+  font-size: 1.04rem;
 }
 
 #article-list > li > .content > .description {
   color: var(--neutral-color-500);
-  padding-block: 6px;
-  font-size: 13px;
+  margin-block: 8px;
+  font-size: 0.9rem;
   word-break: keep-all;
 }
 
 .first-hero {
   display: block;
   word-break: keep-all;
-  margin-block: 72px;
+  margin-top: 36px;
+  margin-bottom: 48px;
+  margin-inline: calc(-48px + 20px + 8px);
 }
 
 .first-hero b {
@@ -196,4 +231,37 @@ header > .root-link {
   line-height: 1.45;
   color: var(--neutral-color-500);
   letter-spacing: -0.025cap;
+}
+
+.halftone {
+  --dot-size: clamp(3px, 0.7cqi, 6px);
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 30 / 8;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  user-select: none;
+}
+
+.halftone-dot {
+  --dot-scale: 1;
+  --primary-mix: 0%;
+
+  width: var(--dot-size);
+  height: var(--dot-size);
+  place-self: center;
+  border-radius: 50%;
+  background-color: var(--neutral-color-200);
+  background-color: color-mix(
+    in oklch,
+    var(--primary-color) var(--primary-mix),
+    var(--neutral-color-200)
+  );
+  transform: scale(var(--dot-scale));
+  transition:
+    transform 160ms ease-out,
+    background-color 160ms ease-out;
 }

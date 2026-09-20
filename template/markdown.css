@@ -130,7 +130,7 @@
   color: var(--fgColor-default);
   background-color: var(--bgColor-default);
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5;
   word-wrap: break-word;
 }
@@ -172,8 +172,8 @@
 
 .markdown-body a {
   background-color: transparent;
-  color: var(--fgColor-accent);
-  text-decoration: none;
+  color: var(--primary-color);
+  text-decoration: underline;
 }
 
 .markdown-body abbr[title] {
@@ -464,14 +464,14 @@
 .markdown-body code,
 .markdown-body samp {
   font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .markdown-body pre {
   margin-top: 0;
   margin-bottom: 0;
   font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
-  font-size: 12px;
+  font-size: 0.75rem;
   word-wrap: normal;
 }
 
@@ -865,7 +865,7 @@
   line-height: 1.45;
   color: var(--fgColor-default);
   background-color: var(--bgColor-muted);
-  border-radius: 6px;
+  border-radius: 16px;
 }
 
 .markdown-body pre code,
@@ -885,7 +885,7 @@
 .markdown-body .csv-data th {
   padding: 5px;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1;
   text-align: left;
   white-space: nowrap;
@@ -917,7 +917,7 @@
 }
 
 .markdown-body .footnotes {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--fgColor-muted);
   border-top: 1px solid var(--borderColor-default);
 }
