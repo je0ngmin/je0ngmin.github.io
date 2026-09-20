@@ -1,6 +1,321 @@
+import { firebaseConfig } from "/firebase-config.js";
+
 const halftone = document.querySelector(".halftone");
 
 if (halftone instanceof HTMLElement) {
+  const drawingCanvas = halftone.querySelector(".halftone-drawing");
+  const resetButton = halftone.querySelector(".halftone-reset");
+  const undoButton = halftone.querySelector(".halftone-undo");
+  const sendButton = halftone.querySelector(".halftone-send");
+  const sendButtonLabel = sendButton?.querySelector("span");
+  const confirmDialog = halftone.querySelector(".halftone-confirm");
+  const resetConfirmDialog = halftone.querySelector(".halftone-reset-confirm");
+
+  if (
+    drawingCanvas instanceof HTMLCanvasElement
+    && resetButton instanceof HTMLButtonElement
+    && undoButton instanceof HTMLButtonElement
+    && sendButton instanceof HTMLButtonElement
+    && sendButtonLabel instanceof HTMLElement
+    && confirmDialog instanceof HTMLDialogElement
+    && resetConfirmDialog instanceof HTMLDialogElement
+  ) {
+    const drawingContext = drawingCanvas.getContext("2d");
+
+    if (drawingContext) {
+      const strokes = [];
+      const undoneStrokes = [];
+      let activeStroke = null;
+      let isSending = false;
+
+      const getPenWidth = () => Math.max(2, Math.min(4, drawingCanvas.clientWidth / 240));
+
+      const drawStroke = (stroke) => {
+        if (stroke.length === 0) return;
+
+        const width = drawingCanvas.clientWidth;
+        const height = drawingCanvas.clientHeight;
+        drawingContext.strokeStyle = "#000";
+        drawingContext.fillStyle = "#000";
+        drawingContext.lineWidth = getPenWidth();
+        drawingContext.lineCap = "round";
+        drawingContext.lineJoin = "round";
+
+        if (stroke.length === 1) {
+          const point = stroke[0];
+          drawingContext.beginPath();
+          drawingContext.arc(
+            point.x * width,
+            point.y * height,
+            drawingContext.lineWidth / 2,
+            0,
+            Math.PI * 2,
+          );
+          drawingContext.fill();
+          return;
+        }
+
+        drawingContext.beginPath();
+        drawingContext.moveTo(stroke[0].x * width, stroke[0].y * height);
+        for (let index = 1; index < stroke.length; index += 1) {
+          drawingContext.lineTo(stroke[index].x * width, stroke[index].y * height);
+        }
+        drawingContext.stroke();
+      };
+
+      const redraw = () => {
+        const width = drawingCanvas.clientWidth;
+        const height = drawingCanvas.clientHeight;
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        drawingCanvas.width = Math.max(1, Math.round(width * pixelRatio));
+        drawingCanvas.height = Math.max(1, Math.round(height * pixelRatio));
+        drawingContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        drawingContext.clearRect(0, 0, width, height);
+        strokes.forEach(drawStroke);
+      };
+
+      const updateButtonState = () => {
+        const isEmpty = strokes.length === 0;
+        resetButton.disabled = isEmpty || isSending;
+        undoButton.disabled = isEmpty || isSending;
+        sendButton.disabled = isEmpty || isSending;
+      };
+
+      const clearDrawing = () => {
+        strokes.length = 0;
+        undoneStrokes.length = 0;
+        activeStroke = null;
+        halftone.classList.remove("is-drawing", "has-drawing");
+        redraw();
+        updateButtonState();
+      };
+
+      const encodeSvgDrawing = () => {
+        const viewBoxWidth = 1200;
+        const viewBoxHeight = 320;
+        const formatCoordinate = (value) => Number(value.toFixed(1));
+        const shapes = strokes.map((stroke) => {
+          const points = stroke.map(({ x, y }) => ({
+            x: formatCoordinate(x * viewBoxWidth),
+            y: formatCoordinate(y * viewBoxHeight),
+          }));
+
+          if (points.length === 1) {
+            return `<circle cx="${points[0].x}" cy="${points[0].y}" r="2"/>`;
+          }
+
+          const path = points
+            .map((point, index) => `${index === 0 ? "M" : "L"}${point.x} ${point.y}`)
+            .join(" ");
+          return `<path d="${path}"/>`;
+        }).join("");
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${viewBoxWidth} ${viewBoxHeight}" fill="none" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">${shapes}</svg>`;
+        const bytes = new TextEncoder().encode(svg);
+        const chunks = [];
+
+        for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+          chunks.push(String.fromCharCode(...bytes.subarray(offset, offset + 0x8000)));
+        }
+
+        return `data:image/svg+xml;base64,${btoa(chunks.join(""))}`;
+      };
+
+      const setSendLabel = (label) => {
+        sendButtonLabel.textContent = label;
+      };
+
+      const createDocumentId = () => {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const randomValues = crypto.getRandomValues(new Uint8Array(20));
+        return Array.from(randomValues, (value) => alphabet[value % alphabet.length]).join("");
+      };
+
+      const saveGuestbookDocument = async (fields) => {
+        const projectId = encodeURIComponent(firebaseConfig.projectId);
+        const documentName = `projects/${firebaseConfig.projectId}/databases/(default)/documents/guestbook/${createDocumentId()}`;
+        const endpoint = new URL(
+          `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents:commit`,
+        );
+        endpoint.searchParams.set("key", firebaseConfig.apiKey);
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            writes: [{
+              update: { name: documentName, fields },
+              updateTransforms: [{
+                fieldPath: "createdAt",
+                setToServerValue: "REQUEST_TIME",
+              }],
+              currentDocument: { exists: false },
+            }],
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Firestore 저장 실패: ${response.status}`);
+        }
+      };
+
+      const getPoint = (event) => {
+        const bounds = drawingCanvas.getBoundingClientRect();
+        return {
+          x: (event.clientX - bounds.left) / bounds.width,
+          y: (event.clientY - bounds.top) / bounds.height,
+        };
+      };
+
+      drawingCanvas.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+
+        event.preventDefault();
+        undoneStrokes.length = 0;
+        activeStroke = [getPoint(event)];
+        strokes.push(activeStroke);
+        halftone.classList.add("is-drawing", "has-drawing");
+        drawingCanvas.setPointerCapture(event.pointerId);
+        drawStroke(activeStroke);
+        updateButtonState();
+      });
+
+      drawingCanvas.addEventListener("pointermove", (event) => {
+        if (!activeStroke) return;
+
+        const previousPoint = activeStroke[activeStroke.length - 1];
+        const nextPoint = getPoint(event);
+        activeStroke.push(nextPoint);
+
+        drawingContext.strokeStyle = "#000";
+        drawingContext.lineWidth = getPenWidth();
+        drawingContext.lineCap = "round";
+        drawingContext.lineJoin = "round";
+        drawingContext.beginPath();
+        drawingContext.moveTo(
+          previousPoint.x * drawingCanvas.clientWidth,
+          previousPoint.y * drawingCanvas.clientHeight,
+        );
+        drawingContext.lineTo(
+          nextPoint.x * drawingCanvas.clientWidth,
+          nextPoint.y * drawingCanvas.clientHeight,
+        );
+        drawingContext.stroke();
+      });
+
+      const finishDrawing = (event) => {
+        if (!activeStroke) return;
+
+        activeStroke = null;
+        halftone.classList.remove("is-drawing");
+        if (drawingCanvas.hasPointerCapture(event.pointerId)) {
+          drawingCanvas.releasePointerCapture(event.pointerId);
+        }
+      };
+
+      drawingCanvas.addEventListener("pointerup", finishDrawing);
+      drawingCanvas.addEventListener("pointercancel", finishDrawing);
+      resetButton.addEventListener("click", () => {
+        if (strokes.length === 0 || isSending) return;
+
+        resetConfirmDialog.returnValue = "";
+        resetConfirmDialog.showModal();
+      });
+      resetConfirmDialog.addEventListener("close", () => {
+        if (resetConfirmDialog.returnValue === "confirm") {
+          clearDrawing();
+        }
+      });
+
+      const undoDrawing = () => {
+        if (strokes.length === 0 || isSending) return false;
+
+        activeStroke = null;
+        undoneStrokes.push(strokes.pop());
+        halftone.classList.remove("is-drawing");
+        halftone.classList.toggle("has-drawing", strokes.length > 0);
+        redraw();
+        updateButtonState();
+        return true;
+      };
+
+      const redoDrawing = () => {
+        if (undoneStrokes.length === 0 || isSending) return false;
+
+        strokes.push(undoneStrokes.pop());
+        halftone.classList.add("has-drawing");
+        redraw();
+        updateButtonState();
+        return true;
+      };
+
+      undoButton.addEventListener("click", undoDrawing);
+      document.addEventListener("keydown", (event) => {
+        if (!(event.ctrlKey || event.metaKey) || event.altKey) return;
+
+        const key = event.key.toLowerCase();
+        const isZ = event.code === "KeyZ" || key === "z";
+        const isY = event.code === "KeyY" || key === "y";
+        const isUndo = isZ && !event.shiftKey;
+        const isRedo = isY || (isZ && event.shiftKey);
+
+        if ((isUndo && undoDrawing()) || (isRedo && redoDrawing())) {
+          event.preventDefault();
+        }
+      });
+
+      const sendDrawing = async () => {
+        if (strokes.length === 0 || isSending) return;
+
+        if (!firebaseConfig.apiKey?.trim() || !firebaseConfig.projectId?.trim()) {
+          setSendLabel("설정 필요");
+          window.setTimeout(() => setSendLabel("보내기"), 1600);
+          return;
+        }
+
+        const image = encodeSvgDrawing();
+        if (image.length > 750_000) {
+          setSendLabel("그림이 너무 큼");
+          window.setTimeout(() => setSendLabel("보내기"), 1600);
+          return;
+        }
+
+        isSending = true;
+        updateButtonState();
+        setSendLabel("보내는 중");
+        sendButton.setAttribute("aria-busy", "true");
+
+        try {
+          await saveGuestbookDocument({ image: { stringValue: image } });
+          clearDrawing();
+          setSendLabel("완료");
+          window.dispatchEvent(new CustomEvent("guestbook:refresh"));
+        } catch (error) {
+          console.error("그림을 Firestore에 저장하지 못했습니다.", error);
+          setSendLabel("다시 시도");
+        } finally {
+          isSending = false;
+          sendButton.removeAttribute("aria-busy");
+          updateButtonState();
+          window.setTimeout(() => setSendLabel("보내기"), 1600);
+        }
+      };
+
+      sendButton.addEventListener("click", () => {
+        if (strokes.length === 0 || isSending) return;
+
+        confirmDialog.returnValue = "";
+        confirmDialog.showModal();
+      });
+      confirmDialog.addEventListener("close", () => {
+        if (confirmDialog.returnValue === "confirm") {
+          void sendDrawing();
+        }
+      });
+      new ResizeObserver(redraw).observe(halftone);
+      redraw();
+      updateButtonState();
+    }
+  }
+
   const shaderCanvas = document.createElement("canvas");
   shaderCanvas.width = 240;
   shaderCanvas.height = 64;
