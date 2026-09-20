@@ -1,19 +1,64 @@
 {% extends 'base.html' %}
-
-
 {% block main %}
 
+<div class="main-margin">
 <section class="first-hero">
     <section class="main">
-        <div class="halftone" aria-hidden="true">
-            {% for _ in range(240) %}
-            <div class="halftone-dot"></div>
-            {% endfor %}
+        <div class="halftone">
+            <div class="halftone-pattern" aria-hidden="true">
+                {% for _ in range(240) %}
+                <div class="halftone-dot"></div>
+                {% endfor %}
+            </div>
+            <canvas class="halftone-drawing" aria-label="검은색 펜으로 그림 그리기"></canvas>
+            <div class="halftone-tools">
+                <button class="halftone-reset halftone-icon-button" type="button" aria-label="그림 전체 초기화" title="그림 전체 초기화" disabled>
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v5m4-5v5"/>
+                    </svg>
+                </button>
+                <button class="halftone-undo halftone-icon-button" type="button" aria-label="마지막 획 되돌리기" title="마지막 획 되돌리기 (Ctrl+Z)" disabled>
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m9 7-5 5 5 5M5 12h8a6 6 0 0 1 6 6"/>
+                    </svg>
+                </button>
+                <button class="halftone-send" type="button" disabled>
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m3 11 18-8-8 18-2-8-8-2Zm8 2 4-4"/>
+                    </svg>
+                    <span>보내기</span>
+                </button>
+            </div>
+            <dialog class="halftone-confirm" aria-labelledby="halftone-confirm-title">
+                <form method="dialog">
+                    <p id="halftone-confirm-title">이 그림을 방명록에 보낼까요?</p>
+                    <p id="halftone-confirm-description">방명록에 보내는 그림은 모두에게 보여집니다.</p>
+                    <div class="halftone-confirm-actions">
+                        <button type="submit" value="cancel">취소</button>
+                        <button class="confirm" type="submit" value="confirm">보내기</button>
+                    </div>
+                </form>
+            </dialog>
+            <dialog class="halftone-confirm halftone-reset-confirm" aria-labelledby="halftone-reset-confirm-title" aria-describedby="halftone-reset-confirm-description">
+                <form method="dialog">
+                    <p id="halftone-reset-confirm-title">그림을 모두 지울까요?</p>
+                    <p id="halftone-reset-confirm-description">지운 그림은 되돌릴 수 없습니다.</p>
+                    <div class="halftone-confirm-actions">
+                        <button type="submit" value="cancel">취소</button>
+                        <button class="confirm" type="submit" value="confirm">초기화</button>
+                    </div>
+                </form>
+            </dialog>
         </div>
     </section>
-    <script src="/halftone.js" defer></script>
+    <script src="/halftone.js" type="module"></script>
 </section>
+</div>
 
+<div class="vertical-header vertical-mask" aria-label="방명록">
+    <div class="vertical-header-track"></div>
+</div>
+<section class="main-margin" style="margin-top: 36px;">
 <h2 class="sr-only">작성한 글 목록</h2>
 <ul id="article-list">
     {% for article in articles %}
@@ -25,4 +70,5 @@
     </li>
     {% endfor %}
 </ul>
+</section>
 {% endblock %}

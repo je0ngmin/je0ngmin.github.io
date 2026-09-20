@@ -54,9 +54,12 @@
       <img src="/assets/x.webp" width="20" height="20" alt="" />
     </a>
   </header>
+  {% block external %}
+  {% endblock %}
   <div id="main">
     {% block main %}
     {% endblock %}
   </div>
+  <script type="module" src="/guestbook.js"></script>
 </body>
 </html>
