@@ -1,0 +1,9 @@
+title: PDF 속 AI만 볼 수 있는 텍스트를 삭제하는 웹사이트 (pdf-hidden-text-remover)
+slug: pdf-hidden-text-remover
+released_at: 2026-10-28 15:46 +0900
+description: PDF 파일 속 AI 프롬프트 인젝션을 막기 위한 웹사이트를 만들었습니다.
+
+keywords:
+  - pdf
+  - wasm
+  - 프롬프트 인젝션
